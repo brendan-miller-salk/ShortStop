@@ -1,0 +1,16 @@
+Bio==1.7.1
+biopython==1.80
+eli5==0.13.0
+joblib==1.2.0
+keras==2.11.0
+matplotlib==3.6.3
+numpy==1.26.4
+pandas==2.2.2
+plotly==5.13.0
+protlearn==0.0.3
+scikit_learn==1.2.1
+seaborn==0.13.2
+tensorflow==2.11.0
+umap==0.1.1
+umap_learn==0.5.3
+xgboost==1.7.3

@@ -1,0 +1,173 @@
+# === Python build artifacts ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+
+# === Environment files ===
+.env
+.venv/
+venv/
+*.env
+
+# === OS crap ===
+.DS_Store
+Thumbs.db
+
+# === Jupyter & R session files ===
+.ipynb_checkpoints/
+.Rhistory
+
+# === Log files ===
+*.log
+
+# === Package manager ===
+pip-log.txt
+poetry.lock
+
+# === IDEs ===
+.vscode/
+.idea/
+
+# === Platform-specific builds ===
+*.so
+*.dylib
+*.pydsrc/shortstop/training/negative_set.py
+src/shortstop/training/feature_extractor.py
+
+# === Python build artifacts ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+
+# === macOS + OS files ===
+.DS_Store
+
+# === Virtual environments ===
+.venv/
+venv/
+
+# === IDEs and editors ===
+.vscode/
+.idea/
+
+# === Logs and env ===
+*.log
+.env
+src/shortstop/training/negative_set.py
+src/shortstop/training/feature_extractor.py
+
+# === Python build artifacts ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+
+# === macOS + OS files ===
+.DS_Store
+
+# === Virtual environments ===
+.venv/
+venv/
+
+# === IDEs and editors ===
+.vscode/
+.idea/
+
+# === Logs and env ===
+*.log
+.env
+
+# === R artifacts ===
+.Rhistory
+src/shortstop/training/negative_set.py
+src/shortstop/training/feature_extractor.py
+
+# === Python build artifacts ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+
+# === macOS + OS files ===
+.DS_Store
+
+# === Virtual environments ===
+.venv/
+venv/
+
+# === IDEs and editors ===
+.vscode/
+.idea/
+
+# === Logs and env ===
+*.log
+.env
+
+# === R artifacts ===
+.Rhistory
+src/shortstop/training/negative_set.py
+src/shortstop/training/feature_extractor.py
+
+# === Python build artifacts ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+
+# === macOS + OS files ===
+.DS_Store
+
+# === Virtual environments ===
+.venv/
+venv/
+
+# === IDEs and editors ===
+.vscode/
+.idea/
+
+# === Logs and env ===
+*.log
+.env
+
+# === R artifacts ===
+.Rhistory
+src/shortstop/training/negative_set.py
+src/shortstop/training/feature_extractor.py
+
+# === Python build artifacts ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+
+# === macOS + OS files ===
+.DS_Store
+
+# === Virtual environments ===
+.venv/
+venv/
+
+# === IDEs and editors ===
+.vscode/
+.idea/
+
+# === Logs and env ===
+*.log
+.env
+
+# === R artifacts ===
+.Rhistory

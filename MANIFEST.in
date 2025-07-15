@@ -1,0 +1,6 @@
+include README.md
+include LICENSE.md
+include CONTRIBUTING.md
+include CLA.md
+recursive-include demo_data *
+recursive-include standard_prediction_model *
