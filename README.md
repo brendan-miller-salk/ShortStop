@@ -2,6 +2,14 @@
   <img src="https://github.com/user-attachments/assets/356d7ec1-0035-48b8-a4d7-c544cade92ca" alt="ShortStop logo" width="500"/>
 </p>
 
+<p align="center">
+  <a href="https://github.com/brendan-miller-salk/ShortStop/releases/download/v1.1.0/shortstop_v1.1_gencode_smorfs_classifications.csv"><img alt="Download GENCODE smORF classifications (CSV)" src="https://img.shields.io/badge/Download-GENCODE_smORF_classifications_(CSV)-2a78d6?style=for-the-badge"/></a>
+</p>
+<p align="center">
+  ShortStop v1.1 classifications (SAM and SAM-Consensus-50/90/100) of 7,152 GENCODE Ribo-seq ORFs<br/>
+  from <a href="https://doi.org/10.1038/s41587-022-01369-0">Mudge et al., 2022, <i>Nature Biotechnology</i></a>
+</p>
+
 ## What is ShortStop?
 
 **ShortStop** is a machine learning framework for identifying smORF-encoded microproteins (<150aa) that share biochemical similarity to highly annotated microproteins. It distinguishes between:
@@ -133,6 +141,8 @@ Each consensus model votes SAM when P(SAM) = P(intracellular) + P(secreted) > 0.
 | **SAM-Consensus-90** | ≥ 90% of models | 290 |
 | **SAM-Consensus-100** | all 100 models | 137 |
 
+Per-smORF results for these GENCODE Ribo-seq ORFs ([Mudge et al., 2022](https://doi.org/10.1038/s41587-022-01369-0)) are attached to the v1.1.0 release: [shortstop_v1.1_gencode_smorfs_classifications.csv](https://github.com/brendan-miller-salk/ShortStop/releases/download/v1.1.0/shortstop_v1.1_gencode_smorfs_classifications.csv).
+
 The SAM-Consensus labels are nested: every SAM-Consensus-100 smORF is also -90 and -50. Use SAM-Consensus-90 or -100 when you need the most robust set, such as when choosing candidates for experiments. 451 of the 604 standard SAMs are also SAM-Consensus-50; the other 153 depend on the particular training sample.
 
 <picture>
@@ -231,6 +241,9 @@ ShortStop is in continuous development. For any questions or suggestions, contac
 
 If you used ShortStop, please cite it in your manuscript:  
 *coming soon*
+
+The GENCODE Ribo-seq ORFs classified above are from:  
+Mudge JM, Ruiz-Orera J, Prensner JR, et al. Standardized annotation of translated open reading frames. *Nat Biotechnol* 40, 994–999 (2022). [doi:10.1038/s41587-022-01369-0](https://doi.org/10.1038/s41587-022-01369-0)
 
 ## License and Contributions
 
