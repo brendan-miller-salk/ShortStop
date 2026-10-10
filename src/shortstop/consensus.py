@@ -16,7 +16,7 @@ import urllib.request
 CONSENSUS_NAME = "shortstop_consensus_v1.1"
 CONSENSUS_URL = ("https://github.com/brendan-miller-salk/ShortStop/releases/download/"
                 f"v1.1.0/{CONSENSUS_NAME}.tar.gz")
-CONSENSUS_SHA256 = "a58f3237cb9fd3dd23ccd94ab5331392ea68c6dbdeb25c83c83a02ff36e607ef"
+CONSENSUS_SHA256 = "2c027c8dde89e05dca3795383046b04c0cf16973653f57dbceed99c75e76c7a0"
 MANIFEST = "consensus_manifest.csv"
 STALE_SECONDS = 6 * 3600  # temporary files older than this are from killed runs
 

@@ -1,7 +1,8 @@
 # ShortStop SAM-Consensus validation
 
 How the 100 SAM-Consensus models shipped with ShortStop v1.1 were chosen, and how far they agree.
-All numbers are for the 7,155 GENCODE smORFs in `demo_data/gencode_smorfs.gtf`.
+All numbers are for the 7,152 GENCODE smORFs that ShortStop scored from
+`src/shortstop/demo_data/gencode_smorfs.gtf`.
 
 ## The 100 models
 
@@ -31,24 +32,24 @@ percentage is the share of the 100 models voting SAM.
 
 | Label | Rule | smORFs | Intracellular / secreted | Also SAM (standard) |
 |---|---|---|---|---|
-| SAM | standard model classification | 606 | 571 / 35 | – |
-| SAM-Consensus-50 | > 50% of models | 539 | 510 / 29 | 453 |
-| SAM-Consensus-90 | ≥ 90% of models | 291 | 270 / 21 | 280 |
+| SAM | standard model classification | 604 | 570 / 34 | – |
+| SAM-Consensus-50 | > 50% of models | 537 | 509 / 28 | 451 |
+| SAM-Consensus-90 | ≥ 90% of models | 290 | 270 / 20 | 279 |
 | SAM-Consensus-100 | all 100 models | 137 | 125 / 12 | 137 |
 
 For the SAM-Consensus labels, intracellular vs secreted is the majority among the SAM-voting
 models; ties go to intracellular (`class_agreement` = 0.5).
 
-**Why model_001 votes SAM for 632 smORFs but the standard model calls 606 SAMs.** The two use
+**Why model_001 votes SAM for 630 smORFs but the standard model calls 604 SAMs.** The two use
 different rules. The standard classification keeps v1.0's rule: the single most probable class.
 A consensus vote counts P(intracellular) + P(secreted) > 0.5. For 26 smORFs, P(SAM) is above 0.5,
 but PRISM is still the single most probable class (for example PRISM 0.45, intracellular 0.30,
 secreted 0.25). The reverse never happens.
 
-**How the standard SAMs spread across the levels.** Of the 606 standard-model SAMs:
+**How the standard SAMs spread across the levels.** Of the 604 standard-model SAMs:
 - 137 are SAM-Consensus-100;
-- 143 more are -90;
-- 173 more are -50;
+- 142 more are -90;
+- 172 more are -50;
 - 153 are not SAM-Consensus-50. These depend on the particular training sample.
 
 **The reverse case.** 86 smORFs are SAM-Consensus-50 although the standard model classifies them as
@@ -67,19 +68,19 @@ localization label of those as uncertain.
 
 | Each model votes SAM when P(SAM) > 0.5 | |
 |---|---|
-| SAM votes per model, median (range) | 590 (464–750) |
-| Mean pairwise Jaccard of SAM lists (5–95%) | 0.582 (0.528–0.628) |
+| SAM votes per model, median (range) | 589 (462–748) |
+| Mean pairwise Jaccard of SAM lists (5–95%) | 0.581 (0.527–0.628) |
 | Fleiss' κ (SAM vs not) | 0.711 |
 | Mean pairwise Spearman of P(SAM) | 0.868 |
 
 **How to read these.**
 - **Jaccard** is the size of the overlap between two models' SAM lists divided by the size of their
-  combination. At 0.582, about 74% of one model's SAM votes are also made by another model. The
+  combination. At 0.581, about 74% of one model's SAM votes are also made by another model. The
   rest depend on the particular training sample.
 - **Fleiss' κ** is agreement over all smORFs, corrected for chance. 0.61–0.80 is conventionally
   "substantial".
 - **The two are not independent evidence.** SAMs are rare (~8% of smORFs here), so the two-category
-  κ is close to the Dice overlap 2J / (1 + J) = 0.736.
+  κ is close to the Dice overlap 2J / (1 + J) = 0.735.
 - **The models rank smORFs consistently** (Spearman 0.87). They disagree mainly about smORFs near
   P(SAM) = 0.5. The SAM-Consensus-90 and -100 labels remove that sensitivity by requiring almost
   every model to agree.
@@ -90,9 +91,9 @@ The shipped consensus models compared with 200 random sets of 100 replicate runs
 
 | | Shipped consensus models | Random 100, median [95% range] |
 |---|---|---|
-| Mean pairwise Jaccard | 0.582 | 0.567 [0.560–0.573] |
-| SAM-Consensus-50 | 539 | 531 [512–548] |
-| SAM-Consensus-90 | 291 | 274 [263–285] |
+| Mean pairwise Jaccard | 0.581 | 0.567 [0.560–0.573] |
+| SAM-Consensus-50 | 537 | 529 [510–546] |
+| SAM-Consensus-90 | 290 | 274 [262–284] |
 | SAM-Consensus-100 | 137 | 129 [120–138] |
 
 Higher-AUC models agree slightly more, which yields somewhat longer SAM-Consensus-90 lists. But
@@ -107,12 +108,12 @@ draws.
 | Models per set | SAM-Consensus-50 | SAM-Consensus-90 |
 |---|---|---|
 | 5 | 0.74 (0.70–0.76) | 0.66 (0.62–0.69) |
-| 10 | 0.80 (0.76–0.83) | 0.75 (0.72–0.78) |
-| 30 | 0.87 (0.85–0.89) | 0.83 (0.79–0.86) |
-| 50 | 0.90 (0.88–0.91) | 0.86 (0.84–0.88) |
+| 10 | 0.80 (0.76–0.82) | 0.75 (0.72–0.78) |
+| 30 | 0.87 (0.85–0.90) | 0.83 (0.79–0.86) |
+| 50 | 0.90 (0.87–0.91) | 0.86 (0.84–0.88) |
 | **100** | **0.92 (0.91–0.94)** | **0.90 (0.87–0.92)** |
 | 200 | 0.95 (0.94–0.96) | 0.93 (0.91–0.95) |
-| 460 | 0.96 (0.96–0.97) | 0.96 (0.95–0.98) |
+| 460 | 0.96 (0.95–0.97) | 0.96 (0.95–0.98) |
 
 Gains flatten past about 100 models. Doubling to 200 improves the overlap by 0.02–0.04, at twice
 the download size and run time.
@@ -151,4 +152,4 @@ the download size and run time.
 
 The scripts are in [`scripts/consensus_validation/`](../scripts/consensus_validation/). They need the
 replicate training-run folders, which are not distributed. Given those, the scripts rebuild the
-bundle byte-for-byte (sha256 `a58f3237…e607ef`).
+bundle byte-for-byte (sha256 `2c027c8d…e76c7a0`).

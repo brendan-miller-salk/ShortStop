@@ -126,14 +126,14 @@ Training ShortStop involves random sampling: which in silico PRISMs are generate
 
 Each consensus model votes SAM when P(SAM) = P(intracellular) + P(secreted) > 0.5. Every smORF gets a **SAM-Consensus percentage** (the share of the 100 models voting SAM) and four yes/no labels:
 
-| Label | Rule | GENCODE smORFs (n = 7,155) |
+| Label | Rule | GENCODE smORFs (n = 7,152) |
 |---|---|---|
-| **SAM** | standard model classification (unchanged from v1.0) | 606 |
-| **SAM-Consensus-50** | > 50% of the 100 models vote SAM | 539 |
-| **SAM-Consensus-90** | ≥ 90% of models | 291 |
+| **SAM** | standard model classification (unchanged from v1.0) | 604 |
+| **SAM-Consensus-50** | > 50% of the 100 models vote SAM | 537 |
+| **SAM-Consensus-90** | ≥ 90% of models | 290 |
 | **SAM-Consensus-100** | all 100 models | 137 |
 
-The SAM-Consensus labels are nested: every SAM-Consensus-100 smORF is also -90 and -50. Use SAM-Consensus-90 or -100 when you need the most robust set, such as when choosing candidates for experiments. 453 of the 606 standard SAMs are also SAM-Consensus-50; the other 153 depend on the particular training sample.
+The SAM-Consensus labels are nested: every SAM-Consensus-100 smORF is also -90 and -50. Use SAM-Consensus-90 or -100 when you need the most robust set, such as when choosing candidates for experiments. 451 of the 604 standard SAMs are also SAM-Consensus-50; the other 153 depend on the particular training sample.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/figures/consensus_levels_dark.png">
@@ -161,7 +161,7 @@ shortstop predict ... --consensus_dir /path    # use or download the bundle here
   <img alt="SAM-Consensus list reproducibility between two independent model sets versus the number of models, flattening past about 100 models" src="docs/figures/consensus_elbow_light.png" width="700">
 </picture>
 
-**Agreement between individual models.** On GENCODE smORFs, each model votes SAM for a median of 590 smORFs (range 464–750). Any two models' SAM lists overlap by Jaccard 0.582 on average, and Fleiss' κ is 0.711 ("substantial"). The models learn a consistent signal, but a single model's SAM list is only partly reproducible, which is why the SAM-Consensus labels are reported.
+**Agreement between individual models.** On GENCODE smORFs, each model votes SAM for a median of 589 smORFs (range 462–748). Any two models' SAM lists overlap by Jaccard 0.581 on average, and Fleiss' κ is 0.711 ("substantial"). The models learn a consistent signal, but a single model's SAM list is only partly reproducible, which is why the SAM-Consensus labels are reported.
 
 Agreement measures robustness to the training sample, not correctness: all 100 models share the same positive training set and features, so they can be confidently wrong together. Full results are in [docs/consensus_validation.md](docs/consensus_validation.md).
 

@@ -3,7 +3,8 @@
 1. consensus_auc_{theme}.png     - XGBoost macro AUC of the replicate training runs, consensus models highlighted
 2. consensus_elbow_{theme}.png   - SAM-Consensus list overlap between two independent model sets vs size
 3. consensus_levels_{theme}.png  - SAM-Consensus percentage per smORF, with the 50 / 90 / 100 levels
-agreement_stats.csv, elbow.csv and random_comparison.csv hold the numbers behind docs/consensus_validation.md.
+label_stats.csv, agreement_stats.csv, elbow.csv and random_comparison.csv hold the numbers behind
+docs/consensus_validation.md. Only GENCODE smORF IDs (starting with lowercase "c") are counted.
 Each model votes SAM when P(intracellular) + P(secreted) > 0.5. SAM-Consensus-50: > 50% of models,
 -90: >= 90%, -100: all models.
 """
@@ -30,7 +31,9 @@ THEMES = {
 manifest = pd.read_csv(f"{HERE}/consensus_manifest.csv")
 excluded = pd.read_csv(f"{HERE}/excluded_models.csv")
 auc = pd.read_csv(f"{AGREE}/model_auc.csv")
-probs = np.load(f"{AGREE}/probs.npy")
+orf_ids = pd.read_csv(f"{AGREE}/orf_ids.csv")["orf_id"].str.strip('"')
+gencode = orf_ids.str.match(r"^c").to_numpy()  # GENCODE smORF IDs only
+probs = np.load(f"{AGREE}/probs.npy")[:, gencode]
 runs = pd.read_csv(f"{AGREE}/models.csv")["model"]
 vote_all = probs[:, :, 1:].sum(2) > SAM_PROB  # runs x smORFs
 pool_idx = np.flatnonzero(~runs.isin(excluded["model"]).to_numpy())
@@ -68,7 +71,7 @@ def elbow(sizes, reps=50, seed=0):
             p5, med, p95 = np.percentile(res[k], [5, 50, 95])
             row.update({f"sam_consensus_{k}_p5": p5, f"sam_consensus_{k}_median": med, f"sam_consensus_{k}_p95": p95})
         rows.append(row)
-    return pd.DataFrame(rows).round(3)
+    return pd.DataFrame(rows).round(4)  # 4 dp so the docs' 2-dp values are rounded once
 
 
 def random_comparison(reps=200, seed=0):
@@ -113,7 +116,42 @@ def agreement_stats():
     return pd.DataFrame({"metric": list(rows), "value": list(rows.values())}).round(4)
 
 
+def label_stats():
+    """Every count quoted in the docs: standard SAM (argmax of model_001) vs SAM-Consensus levels."""
+    std_probs = probs[ens_idx[manifest["is_standard"].to_numpy()][0]]
+    std_cls = std_probs.argmax(1)
+    std_sam = std_cls != 0
+    v = vote_all[ens_idx]
+    k = v.sum(0)
+    n_intra = (v & (probs[ens_idx, :, 1] >= probs[ens_idx, :, 2])).sum(0)
+    intra = n_intra >= k - n_intra
+    agree = np.where(k > 0, np.maximum(n_intra, k - n_intra) / np.maximum(k, 1), np.nan)
+    lv = levels(v)
+    top = np.where(lv[100], 100, np.where(lv[90], 90, np.where(lv[50], 50, 0)))
+    model001_votes = std_probs[:, 1:].sum(1) > SAM_PROB
+    rows = {"n_smorfs": len(k), "sam_standard": std_sam.sum(), "sam_standard_intracellular": (std_cls == 1).sum(),
+            "sam_standard_secreted": (std_cls == 2).sum()}
+    for lvl in (50, 90, 100):
+        sel = lv[lvl]
+        rows.update({f"sam_consensus_{lvl}": sel.sum(), f"sam_consensus_{lvl}_intracellular": (sel & intra).sum(),
+                     f"sam_consensus_{lvl}_secreted": (sel & ~intra).sum(),
+                     f"sam_consensus_{lvl}_also_standard_sam": (sel & std_sam).sum(),
+                     f"sam_consensus_{lvl}_class_agreement_lt_0.9": (sel & (agree < 0.9)).sum()})
+    rows.update({"standard_sam_top_level_100": (std_sam & (top == 100)).sum(),
+                 "standard_sam_top_level_90": (std_sam & (top == 90)).sum(),
+                 "standard_sam_top_level_50": (std_sam & (top == 50)).sum(),
+                 "standard_sam_not_consensus_50": (std_sam & ~lv[50]).sum(),
+                 "consensus_50_not_standard_sam": (lv[50] & ~std_sam).sum(),
+                 "class_ties": ((k > 0) & (agree == 0.5)).sum(), "class_ties_in_consensus_50": (lv[50] & (agree == 0.5)).sum(),
+                 "model_001_sam_votes": model001_votes.sum(),
+                 "model_001_votes_sam_but_standard_prism": (model001_votes & ~std_sam).sum(),
+                 "standard_sam_but_model_001_no_vote": (std_sam & ~model001_votes).sum(),
+                 "smorfs_with_no_sam_votes": (k == 0).sum(), "smorfs_with_1_to_50pct_votes": ((k > 0) & ~lv[50]).sum()})
+    return pd.DataFrame({"metric": list(rows), "value": list(rows.values())})
+
+
 SIZES = [5, 10, 20, 30, 50, 75, 100, 150, 200, 300, 400, 460]
+label_stats().to_csv(f"{HERE}/label_stats.csv", index=False)
 agreement_stats().to_csv(f"{HERE}/agreement_stats.csv", index=False)
 EL = elbow(SIZES)
 EL.to_csv(f"{HERE}/elbow.csv", index=False)
@@ -201,7 +239,7 @@ def fig_levels(t):
     ax.bar(lefts, counts, width=5, align="edge", color=colors, edgecolor=t["surface"], linewidth=2)
     lv = {k: v.sum() for k, v in levels(vote_all[ens_idx]).items()}
     ymax = max(counts)
-    for x, lab in ((25, f"Not SAM-Consensus-50 (1–50%)\n{((n_votes > 0) & (n_votes <= 50)).sum()} smORFs"),
+    for x, lab in ((25, f"Not SAM-Consensus-50 (1–50%)\n{((n_votes > 0) & (n_votes <= 50)).sum():,} smORFs"),
                    (70, f"SAM-Consensus-50\n{lv[50]} (> 50%)"), (95, f"-90\n{lv[90]}"), (102.5, f"-100\n{lv[100]}")):
         ax.text(x, ymax * 1.03, lab, ha="center", va="bottom", color=t["ink2"], fontsize=8.5)
     for x in (50, 90, 100):
@@ -212,7 +250,7 @@ def fig_levels(t):
     ax.set_xticklabels(["0", "20", "40", "50", "60", "80", "90", "100"])
     ax.set_xlabel("SAM-Consensus percentage (% of the 100 models with P(SAM) > 0.5)")
     ax.set_ylabel("smORFs")
-    title(ax, t, "SAM-Consensus levels on 7,155 GENCODE smORFs",
+    title(ax, t, f"SAM-Consensus levels on {gencode.sum():,} GENCODE smORFs",
           f"Nested: every -100 smORF is also -90 and -50. {(pct == 0).sum():,} smORFs with no SAM votes not shown.")
     fig.tight_layout()
     return fig
@@ -226,6 +264,7 @@ for name, fn in (("consensus_auc", fig_auc), ("consensus_elbow", fig_elbow), ("c
         fig = fn(t)
         fig.savefig(f"{OUT}/{name}_{theme}.png", dpi=200, facecolor=t["surface"])
         plt.close(fig)
+print(pd.read_csv(f"{HERE}/label_stats.csv").to_string(index=False))
 print(pd.read_csv(f"{HERE}/agreement_stats.csv").to_string(index=False))
 print(EL.to_string(index=False))
 print(pd.read_csv(f"{HERE}/random_comparison.csv").to_string(index=False))

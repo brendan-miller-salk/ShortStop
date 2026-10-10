@@ -11,9 +11,9 @@ export SHORTSTOP_VALIDATION_WORK=/path/to/work                       # outputs
 
 python predict_all_models.py           # score every run's XGBoost model -> probs.npy, model_auc.csv
 python select_models.py                # pick the 100 -> consensus_v1.1/consensus_manifest.csv
-python consensus_figures.py            # figures, agreement_stats.csv, elbow.csv, random_comparison.csv
+python consensus_figures.py            # figures, label_stats.csv, agreement_stats.csv, elbow.csv, random_comparison.csv
 python build_bundle.py                 # shortstop_consensus_v1.1.tar.gz + .sha256
 ```
 
 `predict_all_models.py` uses about 700 MB of memory and takes about 15 minutes for ~1,000 models on
-7,155 smORFs. The other scripts take a few minutes in total.
+~7,000 smORFs. The other scripts take a few minutes in total.
