@@ -17,6 +17,7 @@ class PipelineStructure:
         self.featuresDir = f'{self.outdir}/features'
         self.modelsDir = f'{self.outdir}/models'
         self.predictionsDir = f'{self.outdir}/predictions'
+        self.consensusDir = f'{self.predictionsDir}/consensus'  # created only when the consensus runs
         check_multi_dirs([self.outdir, self.databaseDir, self.plotsDir, self.featuresDir, self.modelsDir, self.predictionsDir])
 
     def set_train_attributes(self):

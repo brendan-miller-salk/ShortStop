@@ -70,6 +70,7 @@ class Pipeline:
         predictions = smORFPredictor(args=self.args)
         predictions.dansby()
         print("✅ Predictions out and completed!")
+        self.__consensus(predictions)
         
     def demo(self):
         print("▶️ You have initiated the demo...")
@@ -104,11 +105,23 @@ class Pipeline:
         predictions = smORFPredictor(args=self.args)
         predictions.dansby()
         print("✅ Predictions out and completed!")
+        self.__consensus(predictions)
         
         #self.__cleanup_output_directory(self.outdir)  # Replace "--outdir" with the actual variable holding the output directory path
         
         print("✅ Demo completed.")
         
+    def __consensus(self, predictions):
+        if self.args.no_consensus:
+            return
+        print("⏳Scoring with the 100 consensus models (SAM-Consensus-50/90/100)...")
+        try:
+            predictions.consensus()
+        except RuntimeError as e:
+            raise SystemExit(f"❌ SAM-Consensus failed: {e}\n   The standard model predictions were written to "
+                             f"{predictions.predictionsDir}.")
+        print("✅ SAM-Consensus completed!")
+
     def __cleanup_output_directory(self, outdir):
         """Removes all directories and files in the specified output directory and recreates the directory."""
         try:
