@@ -121,6 +121,7 @@ class ShortStop:
         self.modeArguments.add_argument("--orfs_to_be_predicted", default='shortstop_output/features/extracted_features_of_smorfs.csv')
         self.modeArguments.add_argument("--model_scaler", default=str(MODEL_DIR / 'scaler.save'))
         self.modeArguments.add_argument("--model", default=str(MODEL_DIR / 'best_xgb_model.model'))
+        self.__add_consensus_args()
 
     def __set_demo_mode(self):
         self.modeArguments = self.parser.add_argument_group("Demo mode options")
@@ -136,6 +137,12 @@ class ShortStop:
         self.modeArguments.add_argument("--orfs_to_be_predicted", default='shortstop_output/features/extracted_features_of_smorfs.csv')
         self.modeArguments.add_argument("--model_scaler", default=str(MODEL_DIR / 'scaler.save'))
         self.modeArguments.add_argument("--model", default=str(MODEL_DIR / 'best_xgb_model.model'))
+        self.__add_consensus_args()
+
+    def __add_consensus_args(self):
+        self.consensusArguments = self.parser.add_argument_group("SAM-Consensus options")
+        self.consensusArguments.add_argument("--no_consensus", action="store_true", help="Skip the 100-model consensus (SAM-Consensus-50/90/100) and write only the standard model's predictions")
+        self.consensusArguments.add_argument("--consensus_dir", default=None, help="Extracted consensus model bundle, or a folder to download it into. Unset: the package dir, else ~/.cache/shortstop")
 
     def execute(self):
         if self.mode in ['train', 'insilico', 'feature_extract']:
