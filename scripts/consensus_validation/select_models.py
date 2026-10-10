@@ -2,7 +2,8 @@
 
 model_001 is the published standard model (testing251). testing144 is excluded by the author.
 model_002..model_100 are the next 99 runs by XGBoost macro AUC.
-Per-model stats are on gencode_smorfs with a SAM vote = P(intracellular)+P(secreted) > 0.5.
+Per-model stats are on GENCODE smORF IDs (starting with lowercase "c") with a SAM vote =
+P(intracellular)+P(secreted) > 0.5.
 """
 import os
 import numpy as np
@@ -20,7 +21,8 @@ pool = auc[~auc["model"].isin(EXCLUDED)]
 others = pool[pool["model"] != STANDARD].head(N_MODELS - 1)
 chosen = pd.concat([pool[pool["model"] == STANDARD], others], ignore_index=True)
 
-probs = np.load(f"{AGREE}/probs.npy")
+gencode = pd.read_csv(f"{AGREE}/orf_ids.csv")["orf_id"].str.strip('"').str.match(r"^c").to_numpy()
+probs = np.load(f"{AGREE}/probs.npy")[:, gencode]
 runs = pd.read_csv(f"{AGREE}/models.csv")["model"]
 idx = [runs[runs == m].index[0] for m in chosen["model"]]
 sam = probs[idx, :, 1:].sum(2) > SAM_PROB
