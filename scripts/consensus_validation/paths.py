@@ -8,4 +8,4 @@ FEATURES = os.environ.get("SHORTSTOP_FEATURES", "extracted_features_of_smorfs.cs
 # where probs.npy, orf_ids.csv, models.csv and model_auc.csv go
 WORK = os.path.abspath(os.environ.get("SHORTSTOP_VALIDATION_WORK", "consensus_validation_work"))
 # consensus model selection, figures and the release bundle
-CONSENSUS = os.path.join(WORK, "consensus_v1.1")
+CONSENSUS = os.path.join(WORK, os.environ.get("SHORTSTOP_CONSENSUS_NAME", "consensus_v1.2"))

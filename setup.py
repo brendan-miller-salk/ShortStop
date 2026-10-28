@@ -33,7 +33,7 @@ tf_dep = 'tensorflow-macos==2.11.0' if system == 'Darwin' else 'tensorflow==2.11
 
 setup(
     name='shortstop',
-    version='1.1.0',
+    version='1.2.0',
     description='ShortStop: A classifier for translated smORFs',
     author='Brendan Miller',
     url='https://github.com/brendan-miller-salk/ShortStop',

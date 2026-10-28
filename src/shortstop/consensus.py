@@ -13,10 +13,10 @@ import tempfile
 import time
 import urllib.request
 
-CONSENSUS_NAME = "shortstop_consensus_v1.1"
+CONSENSUS_NAME = "shortstop_consensus_v1.2"
 CONSENSUS_URL = ("https://github.com/brendan-miller-salk/ShortStop/releases/download/"
-                f"v1.1.0/{CONSENSUS_NAME}.tar.gz")
-CONSENSUS_SHA256 = "2c027c8dde89e05dca3795383046b04c0cf16973653f57dbceed99c75e76c7a0"
+                f"v1.2.0/{CONSENSUS_NAME}.tar.gz")
+CONSENSUS_SHA256 = "4f77162be7573755b7f89eed0de08131a3d20651005069a215b6769c4298e835"
 MANIFEST = "consensus_manifest.csv"
 STALE_SECONDS = 6 * 3600  # temporary files older than this are from killed runs
 
