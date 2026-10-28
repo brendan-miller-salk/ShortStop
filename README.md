@@ -240,7 +240,7 @@ ShortStop is in continuous development. For any questions or suggestions, contac
 ## Citation
 
 If you used ShortStop, please cite it in your manuscript:  
-*coming soon*
+Miller B, de Souza EV, Pai VJ, Kim H, Vaughan JM, Lau CJ, Diedrich JK, Saghatelian A. ShortStop: a machine learning framework for microprotein discovery. *BMC Methods* 2, 16 (2025). [doi:10.1186/s44330-025-00037-4](https://doi.org/10.1186/s44330-025-00037-4)
 
 The GENCODE Ribo-seq ORFs classified above are from:  
 Mudge JM, Ruiz-Orera J, Prensner JR, et al. Standardized annotation of translated open reading frames. *Nat Biotechnol* 40, 994–999 (2022). [doi:10.1038/s41587-022-01369-0](https://doi.org/10.1038/s41587-022-01369-0)
