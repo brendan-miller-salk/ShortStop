@@ -64,7 +64,7 @@ class SequenceExtractor(PipelineStructure):
         Extracts unknown sequences from the given GTF and FASTA files.
         
         """
-        unknown_orfs = GTFtoSeq(gtf_file=self.toBePredictedGTF, fasta_file=self.genome, cds_order="Last", utr_length=self.args.utr_length)
+        unknown_orfs = GTFtoSeq(gtf_file=self.toBePredictedGTF, fasta_file=self.genome, utr_length=self.args.utr_length)
         unknown_orfs_df = unknown_orfs.extract_sequences()
         unknown_orfs_df['length'] = unknown_orfs_df['aa_seq'].str.len()
         unknown_orfs_df = unknown_orfs_df[unknown_orfs_df['length'] >= 9]
@@ -74,13 +74,13 @@ class SequenceExtractor(PipelineStructure):
 
     def extract_sequences(self):
    
-        unknown_orfs = GTFtoSeq(gtf_file=self.toBePredictedGTF, fasta_file=self.genome, cds_order="Last", utr_length=self.args.utr_length)
+        unknown_orfs = GTFtoSeq(gtf_file=self.toBePredictedGTF, fasta_file=self.genome, utr_length=self.args.utr_length)
         unknown_orfs_df = unknown_orfs.extract_sequences()
         unknown_orfs_df['type'] = 'unknown_orfs'
         unknown_orfs_df["transcript_id"] = unknown_orfs_df["orf_id"]
         unknown_orfs_df.to_csv(self.unknown_sequences, index=False)
 
-        positive_orfs = GTFtoSeq(gtf_file=self.positiveMicroproteinsGTF, fasta_file=self.genome, cds_order='First', utr_length=self.args.utr_length)
+        positive_orfs = GTFtoSeq(gtf_file=self.positiveMicroproteinsGTF, fasta_file=self.genome, utr_length=self.args.utr_length)
         positive_orfs_df = positive_orfs.extract_sequences()
         positive_orfs_df['type'] = 'positive_orfs'
 
