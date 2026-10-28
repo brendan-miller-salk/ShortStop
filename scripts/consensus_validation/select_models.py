@@ -1,7 +1,8 @@
 """Select the 100 ShortStop consensus models and write consensus_manifest.csv.
 
-model_001 is the published standard model (testing251). testing144 is excluded by the author.
-model_002..model_100 are the next 99 runs by XGBoost macro AUC.
+model_001 is the published standard model, linked into SHORTSTOP_RUNS as testing0 (SHORTSTOP_STANDARD).
+model_002..model_100 are the next 99 runs by XGBoost macro AUC. Runs listed in SHORTSTOP_EXCLUDED
+("run:reason;run:reason") are left out; none are for v1.2.
 Per-model stats are on GENCODE smORF IDs (starting with lowercase "c") with a SAM vote =
 P(intracellular)+P(secreted) > 0.5.
 """
@@ -11,8 +12,8 @@ import pandas as pd
 
 from paths import WORK as AGREE, CONSENSUS as HERE
 os.makedirs(HERE, exist_ok=True)
-STANDARD = "testing251"
-EXCLUDED = {"testing144": "excluded by author (anomaly found on inspection)"}
+STANDARD = os.environ.get("SHORTSTOP_STANDARD", "testing0")
+EXCLUDED = dict(x.split(":", 1) for x in os.environ.get("SHORTSTOP_EXCLUDED", "").split(";") if x)
 N_MODELS = 100
 SAM_PROB = 0.5
 

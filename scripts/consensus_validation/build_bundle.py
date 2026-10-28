@@ -1,4 +1,4 @@
-"""Package the 100 consensus models as shortstop_consensus_v1.1.tar.gz (deterministic) + sha256.
+"""Package the 100 consensus models as shortstop_consensus_v1.2.tar.gz (deterministic) + sha256.
 
 Each model_XXX/ holds best_xgb_model.model, scaler.save, and orfs_features_in_train_model.csv
 (header line only, which is all predict mode reads). consensus_manifest.csv sits at the top level.
@@ -12,7 +12,7 @@ import tarfile
 import pandas as pd
 
 from paths import RUNS, CONSENSUS as HERE
-NAME = "shortstop_consensus_v1.1"
+NAME = "shortstop_consensus_v1.2"
 STAGE = f"{HERE}/{NAME}"
 
 manifest = pd.read_csv(f"{HERE}/consensus_manifest.csv")
