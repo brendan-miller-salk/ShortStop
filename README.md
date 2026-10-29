@@ -32,7 +32,7 @@ Thousands of smORFs are actively translated in the human transcriptome, yet the 
 
 Protein function is conventionally inferred from evidence of evolutionary selection. However, most encoded microproteins are evolutionarily young and lack detectable sequence conservation across species.
 
-ShortStop provides a homology-independent approach to identify microproteins that share key physicochemical properties with known proteins, even in the absence of sequence similarity. It also generates stochastic, length- and composition-matched in silico PRISMs, which give a null model for asking whether putative microproteins differ from chance.
+ShortStop provides a homology-independent approach to identify microproteins that share key physicochemical properties with known proteins, even in the absence of sequence similarity.
 
 Stochastic smORF-encoded microprotein sequences like these offer a natural null model for asking whether putative microproteins differ from chance. For example, [Heames et al. (2023)](https://doi.org/10.1038/s41559-023-02010-2) compared putative human and fly de novo proteins with synthetic, unevolved sequences of matched length and composition. They found similar predicted biophysical properties but moderately higher solubility in vitro. In silico PRISMs provide this kind of matched baseline for any smORF catalog... for example, as negative controls in screens, as a reference for structure or disorder predictions, or to test whether a property of translated smORFs exceeds stochastic expectation.
 
@@ -44,7 +44,7 @@ ShortStop classifications and in silico PRISMs support hypothesis-driven studies
 ## Key Features
 
 - Classifies smORFs as SAMs or PRISMs using a pre-trained ML model
-- Generates composition-matched negative control microprotein sequences
+- Generates stochastic, length- and composition-matched in silico PRISMs (negative control microprotein sequences)
 - Extracts physicochemical features from input smORFs
 - Supports model training, prediction, and feature extraction as CLI modules
 
@@ -142,14 +142,14 @@ Training ShortStop involves random sampling: which in silico PRISMs are generate
 
 Each consensus model votes SAM when P(SAM) = P(intracellular) + P(secreted) > 0.5. Every smORF gets a **SAM-Consensus percentage** (the share of the 100 models voting SAM) and four yes/no labels:
 
-| Label | Rule | GENCODE smORFs (n = 7,152) |
+| Label | Rule | TransCODE Phase 1 smORFs (n = 7,152) |
 |---|---|---|
 | **SAM** | standard model classification (unchanged from v1.0) | 604 |
 | **SAM-Consensus-50** | > 50% of the 100 models vote SAM | 522 |
 | **SAM-Consensus-90** | ≥ 90% of models | 282 |
 | **SAM-Consensus-100** | all 100 models | 126 |
 
-Per-smORF results for these GENCODE Ribo-seq ORFs ([Mudge et al., 2022](https://doi.org/10.1038/s41587-022-01369-0)) are attached to the v1.2.0 release: [shortstop_v1.2_gencode_smorfs_classifications.csv](https://github.com/brendan-miller-salk/ShortStop/releases/download/v1.2.0/shortstop_v1.2_gencode_smorfs_classifications.csv).
+Per-smORF results for these TransCODE Consortium Phase 1 smORFs ([Mudge et al., 2022](https://doi.org/10.1038/s41587-022-01369-0)) are attached to the v1.2.0 release: [shortstop_v1.2_gencode_smorfs_classifications.csv](https://github.com/brendan-miller-salk/ShortStop/releases/download/v1.2.0/shortstop_v1.2_gencode_smorfs_classifications.csv).
 
 The SAM-Consensus labels are nested: every SAM-Consensus-100 smORF is also -90 and -50. Use SAM-Consensus-90 or -100 when you need the most robust set, such as when choosing candidates for experiments. 438 of the 604 standard SAMs are also SAM-Consensus-50; the other 166 depend on the particular training sample.
 
@@ -179,7 +179,7 @@ shortstop predict ... --consensus_dir /path    # use or download the bundle here
   <img alt="SAM-Consensus list reproducibility between two independent model sets versus the number of models, flattening past about 100 models" src="docs/figures/consensus_elbow_light.png" width="700">
 </picture>
 
-**Agreement between individual models.** On GENCODE smORFs, each model votes SAM for a median of 570 smORFs (range 439–832). Any two models' SAM lists overlap by Jaccard 0.576 on average, and Fleiss' κ is 0.707 ("substantial"). The models learn a consistent signal, but a single model's SAM list is only partly reproducible, which is why the SAM-Consensus labels are reported.
+**Agreement between individual models.** On TransCODE Phase 1 smORFs, each model votes SAM for a median of 570 smORFs (range 439–832). Any two models' SAM lists overlap by Jaccard 0.576 on average, and Fleiss' κ is 0.707 ("substantial"). The models learn a consistent signal, but a single model's SAM list is only partly reproducible, which is why the SAM-Consensus labels are reported.
 
 Agreement measures robustness to the training sample, not correctness: all 100 models share the same positive training set and features, so they can be confidently wrong together. Full results are in [docs/consensus_validation.md](docs/consensus_validation.md).
 
@@ -250,7 +250,7 @@ ShortStop is in continuous development. For any questions or suggestions, contac
 If you used ShortStop, please cite it in your manuscript:  
 Miller B, de Souza EV, Pai VJ, Kim H, Vaughan JM, Lau CJ, Diedrich JK, Saghatelian A. ShortStop: a machine learning framework for microprotein discovery. *BMC Methods* 2, 16 (2025). [doi:10.1186/s44330-025-00037-4](https://doi.org/10.1186/s44330-025-00037-4)
 
-The GENCODE Ribo-seq ORFs classified above are from:  
+The TransCODE Consortium Phase 1 smORFs classified above are from:  
 Mudge JM, Ruiz-Orera J, Prensner JR, et al. Standardized annotation of translated open reading frames. *Nat Biotechnol* 40, 994–999 (2022). [doi:10.1038/s41587-022-01369-0](https://doi.org/10.1038/s41587-022-01369-0)
 
 ## License and Contributions
