@@ -2,34 +2,42 @@
   <img src="https://github.com/user-attachments/assets/356d7ec1-0035-48b8-a4d7-c544cade92ca" alt="ShortStop logo" width="500"/>
 </p>
 
-<p align="center">
-  <a href="https://github.com/brendan-miller-salk/ShortStop/releases/download/v1.2.0/shortstop_v1.2_gencode_smorfs_classifications.csv"><img alt="Download GENCODE smORF classifications (CSV)" src="https://img.shields.io/badge/Download-GENCODE_smORF_classifications_(CSV)-2a78d6?style=for-the-badge"/></a>
-</p>
-<p align="center">
-  ShortStop v1.2 classifications (SAM and SAM-Consensus-50/90/100) of 7,152 GENCODE Ribo-seq ORFs<br/>
-  from <a href="https://doi.org/10.1038/s41587-022-01369-0">Mudge et al., 2022, <i>Nature Biotechnology</i></a>
-</p>
+<div align="center">
+<table>
+<tr><td align="center">
+<b>ShortStop v1.2 classifications of the TransCODE Consortium Phase 1 smORF set</b><br/><br/>
+<a href="https://github.com/brendan-miller-salk/ShortStop/releases/download/v1.2.0/shortstop_v1.2_gencode_smorfs_classifications.csv"><img alt="Download TransCODE Consortium Phase 1 smORF classifications (CSV)" height="40" src="https://img.shields.io/badge/DOWNLOAD-TransCODE_Phase_1_smORF_classifications_(CSV)-e8590c?style=for-the-badge&labelColor=222222"/></a>
+<p>SAM and SAM-Consensus-50/90/100 labels for every smORF<br/>
+from <a href="https://doi.org/10.1038/s41587-022-01369-0">Mudge et al., 2022, <i>Nature Biotechnology</i></a></p>
+</td></tr>
+</table>
+</div>
 
 ## What is ShortStop?
 
-**ShortStop** is a machine learning framework for identifying smORF-encoded microproteins (<150aa) that share biochemical similarity to highly annotated microproteins. It distinguishes between:
+**ShortStop** is a machine learning framework for identifying smORF-encoded microproteins (<150 aa) that share biochemical similarity to highly annotated microproteins (i.e., annotated in UniProt/Swiss-Prot) or random smORFs generated stochastically. It specifically classifies smORFs as the following:
 
-- **SAMs** (Swiss-Prot Analog Microproteins): smORFs that resemble microproteins in Swiss-Prot, the reviewed  section of the UniProt Knowledgebase.
-- **PRISMs** (Physicochemically Resembling In Silico Microproteins): smORFs that resemble synthetic sequences.
+- **SAMs** (Swiss-Prot Analog Microproteins): smORFs that resemble microproteins in Swiss-Prot, the reviewed section of the UniProt Knowledgebase.
+- **PRISMs** (Physicochemically Resembling In Silico Microproteins): smORFs that resemble stochastically generated sequences with no evolutionary history. See below for more information on PRISMs.
 
-ShortStop also supports the generation of matched negative control microprotein sequences (i.e., PRISMS) for downstream applications.
+### In silico PRISMs: a matched stochastic baseline
+
+ShortStop generates the in silico PRISMs used during training and treats these as the negative/null hypothesis set. The core feature of ShortStop is precisely these PRISMS. These PRISMs are random sequences, but they are best described as stochastic, because they are generated specifically by matching the length and composition of smORFs you chose (e.g., a set of ribosome profiled smORFs). In our case, for the standard ShortStop prediction model and consensus models, we generated silico PRISMs matched in length and composition to the combined set of the TransCODE 7,264 translating smORFs ([Mudge et al., 2022](https://doi.org/10.1038/s41587-022-01369-0)) and UniProt/Swiss-Prot microproteins (<150 aa). 
 
 ---
 
 ## Why Use ShortStop?
 
-Thousands of smORFs are actively translated in the human transcriptome, yet the functions of their encoded microproteins remain unknown. 
+Thousands of smORFs are actively translated in the human transcriptome, yet the functions of their encoded microproteins remain unknown.
 
-Protein function is conventionally inferred from evidence of evolutionary selection. However, most encoded microproteins are evolutionarily young and lack detectable sequence conservation across species. 
+Protein function is conventionally inferred from evidence of evolutionary selection. However, most encoded microproteins are evolutionarily young and lack detectable sequence conservation across species.
 
-ShortStop provides a homology-independent approach to identify microproteins that share key physicochemical properties with known proteins, even in the absence of sequence similarity. 
+ShortStop provides a homology-independent approach to identify microproteins that share key physicochemical properties with known proteins, even in the absence of sequence similarity. It also generates stochastic, length- and composition-matched in silico PRISMs, which give a null model for asking whether putative microproteins differ from chance.
 
-ShortStop classifications supports hypothesis-driven studies to "deorphanize" the function of translating smORFs. It also provides a foundation for future benchmarking of new algorithms and methods as data emerges from ongoing studies.
+Stochastic smORF-encoded microprotein sequences like these offer a natural null model for asking whether putative microproteins differ from chance. For example, [Heames et al. (2023)](https://doi.org/10.1038/s41559-023-02010-2) compared putative human and fly de novo proteins with synthetic, unevolved sequences of matched length and composition. They found similar predicted biophysical properties but moderately higher solubility in vitro. In silico PRISMs provide this kind of matched baseline for any smORF catalog... for example, as negative controls in screens, as a reference for structure or disorder predictions, or to test whether a property of translated smORFs exceeds stochastic expectation.
+
+ShortStop classifications and in silico PRISMs support hypothesis-driven studies to "deorphanize" the function of translating smORFs. They also provide a foundation for benchmarking new algorithms and methods as data emerge from ongoing studies.
+
 
 ---
 
